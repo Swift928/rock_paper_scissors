@@ -5,90 +5,86 @@ function getComputerChoice() {
     return choices[compResult].toLowerCase();
 }
 
+function playerClick() {
+    let btns = document.querySelectorAll('.selection');
+    btns.forEach(item => 
+        {item.addEventListener('click', () => {
+        let choice = item.textContent.toLowerCase();
+        console.log(game(choice));
+    })})};
 
-function game() {
-    let player_score = 0;
-    let comp_score = 0;
+let player_score = 0;
+let comp_score = 0;
+
+function scoreKeeper() {
+    let scorer = document.querySelector('#scoreCounter')
+    if (player_score !== 5 && comp_score !== 5) {
+        scorer.innerHTML = `Score: <br> User - ${player_score} | Computer - ${comp_score}`
+    } else if (player_score == 5) {
+        scorer.innerHTML = `You Win! <br> User - ${player_score} | Computer - ${comp_score}`
+    } else { scorer.innerHTML = `You Lose! <br> User - ${player_score} | Computer - ${comp_score}` }
+}
+
+let answers = document.createElement('div');
+let btnContainer = document.querySelector('.button-container')
+btnContainer.parentNode.insertBefore(answers, btnContainer)
+
+
+function gameSelections(player, compChoice) {
+    answers.textContent = ''
+
+    playerAnswer = capitalizeFirstLetter(player)
+    compAnswer = capitalizeFirstLetter(compChoice)
+    answers.innerHTML =`User: ${playerAnswer} | Computer: ${compAnswer}`
+};
+
+function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+
+let isGameOver = false;
+
+function game(player) {
+    if (!isGameOver) {
     let moves = choices.map(item => item.toLowerCase());
+    let compChoice = getComputerChoice()
+       
+    playGame(player, compChoice)
 
-    for (let i = 1; i <= 5; i++) {
-        
+    gameSelections(player, compChoice)
 
-        let player = prompt('Please enter you choice: ').toLowerCase()
-        let compChoice = getComputerChoice()
+    scoreKeeper()}
 
-        do {
-            if (!moves.includes(player.toLowerCase())) {
-                console.log('Please choose again!')
-                player = prompt("Enter a valid choice (rock, paper, scissors); ")
-            } else {
-                break;
-            }
+    if (player_score == 5 || comp_score == 5) {
+        isGameOver = true;
+    }};
     
-        } while (true);
-        
-        firstGame(player, compChoice)
-
-        function firstGame(player, compChoice) {
-        if (player === 'rock') {
-            if (compChoice === 'paper') {
-                player_score += 1;
-                console.log(`Player: ${player}   Computer: ${compChoice}`)
-                console.log('You Win!');
-            } else if (compChoice === 'rock') {
-                console.log(`Player: ${player}   Computer: ${compChoice}`)
-                console.log(`It's a Tie!`);
-            } else {
-                comp_score += 1;
-                console.log(`Player: ${player}   Computer: ${compChoice}`)
-                console.log(`You Lose!`)
-            }
-            } else if (player === 'paper') {
-            if (compChoice === 'rock') {
-                player_score += 1;
-                console.log(`Player: ${player}   Computer: ${compChoice}`)
-                console.log('You Win!');
-            } else if (compChoice === 'paper') {
-                console.log(`Player: ${player}   Computer: ${compChoice}`)
-                console.log(`It's a Tie!`);
-            } else {
-                comp_score += 1;
-                console.log(`Player: ${player}   Computer: ${compChoice}`)
-                console.log(`You Lose!`)
-            }
-            } else if (player === 'scissors') {
-            if (compChoice === 'paper') {
-                player_score += 1;
-                console.log(`Player: ${player}   Computer: ${compChoice}`)
-                console.log('You Win!');
-            } else if (compChoice === 'scissors') {
-                console.log(`Player: ${player}   Computer: ${compChoice}`)
-                console.log(`It's a Tie!`);
-            } else {
-                comp_score += 1;
-                console.log(`Player: ${player}   Computer: ${compChoice}`)
-                console.log(`You Lose!`)
-            }
-            }   
+function playGame(player, compChoice) {
+    if (player === 'rock') {
+        if (compChoice === 'paper') {
+            player_score += 1;
+        } else if (compChoice === 'rock') {
+            // It's a tie
+        } else {
+            comp_score += 1;
         }
-    }
-
-if (player_score > comp_score) {
-    console.log(`Player Score: ${player_score}
-Computer Score: ${comp_score}
-You Won the Series!`)
-} else if (player_score < comp_score) {
-    console.log(`Player Score: ${player_score}
-Computer Score: ${comp_score}
-You Lost the Series!`)
-} else {
-    console.log(`Player Score: ${player_score}
-Computer Score: ${comp_score}
-The Series is a Tie!`)
-}
-
-
-}
+        } else if (player === 'paper') {
+        if (compChoice === 'rock') {
+            player_score += 1;
+        } else if (compChoice === 'paper') {
+            // It's a tie
+        } else {
+            comp_score += 1;
+        }
+        } else if (player === 'scissors') {
+        if (compChoice === 'paper') {
+            player_score += 1;
+        } else if (compChoice === 'scissors') {
+            // It's a tie
+        } else {
+            comp_score += 1;
+        }}};
 
 
-console.log(game())
+playerClick()
